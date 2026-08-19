@@ -11,7 +11,7 @@ services:
       MONGODB_URI: mongodb://mevn:mevn2024@host.docker.internal:27018/auditoria?authSource=admin
       JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret}
       JWT_EXPIRES_IN: 8h
-      FRONTEND_URL: http://localhost:5173,http://127.0.0.1:5173,http://localhost
+      FRONTEND_URL: http://localhost:5173,http://127.0.0.1:5173,http://161.97.116.58:5173,http://161.97.116.58
       SEED_ADMIN_NOMBRE: Administrador
       SEED_ADMIN_USERNAME: admin2
       SEED_ADMIN_EMAIL: admin2@admin.com
