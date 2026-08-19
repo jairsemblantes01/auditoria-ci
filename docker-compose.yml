@@ -4,9 +4,11 @@ services:
     restart: unless-stopped
     ports:
       - "4000:4000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       PORT: 4000
-      MONGODB_URI: mongodb://mevn:mevn2024@mongodb:27017/auditoria?authSource=admin
+      MONGODB_URI: mongodb://mevn:mevn2024@host.docker.internal:27018/auditoria?authSource=admin
       JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret}
       JWT_EXPIRES_IN: 8h
       FRONTEND_URL: http://localhost:5173,http://127.0.0.1:5173,http://localhost
@@ -20,9 +22,6 @@ services:
       SEED_EMPRESA_REPORT_URL: https://app.powerbi.com/view?r=eyJrIjoiN2UzYzRjNTItN2U1NC00YTRlLWEyYzQtZjQwMTM1ODI5MTUzIiwidCI6IjhjYTUyZTJiLTFkMjAtNDI3NC05YTEzLWJkNzZlY2NiODFkMSIsImMiOjR9
       SEED_EMPRESA_USER_USERNAME: empresa003
       SEED_EMPRESA_USER_PASSWORD: "123456"
-    networks:
-      - default
-      - backend
 
   frontend:
     image: jairum/auditoria.app:latest
@@ -31,7 +30,3 @@ services:
       - "5173:80"
     depends_on:
       - backend
-
-networks:
-  backend:
-    external: true
