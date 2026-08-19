@@ -4,11 +4,12 @@ services:
     restart: unless-stopped
     ports:
       - "4000:4000"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    networks:
+      - default
+      - mongo
     environment:
       PORT: 4000
-      MONGODB_URI: mongodb://mevn:mevn2024@host.docker.internal:27018/auditoria?authSource=admin
+      MONGODB_URI: mongodb://mevn:mevn2024@mongodb:27017/auditoria?authSource=admin
       JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret}
       JWT_EXPIRES_IN: 8h
       FRONTEND_URL: http://localhost:5173,http://127.0.0.1:5173,http://161.97.116.58:5173,http://161.97.116.58
@@ -30,3 +31,7 @@ services:
       - "5173:80"
     depends_on:
       - backend
+
+networks:
+  mongo:
+    name: auditoria-mongo
