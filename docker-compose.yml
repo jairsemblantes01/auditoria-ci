@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      MONGODB_URI: mongodb://mevn:mevn2024@mongodb:27017/auditoria?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-change-this-jwt-secret}
+      JWT_EXPIRES_IN: 8h
+      FRONTEND_URL: http://localhost:5173,http://127.0.0.1:5173,http://localhost
+      SEED_ADMIN_NOMBRE: Administrador
+      SEED_ADMIN_USERNAME: admin2
+      SEED_ADMIN_EMAIL: admin2@admin.com
+      SEED_ADMIN_PASSWORD: "123456"
+      SEED_GLOBAL_REPORT_URL: https://app.powerbi.com/view?r=eyJrIjoiYTZmYWYzNTItNDE2Ni00Zjk5LTg3M2ItZDVjNjU3M2Y3YjJlIiwidCI6IjhjYTUyZTJiLTFkMjAtNDI3NC05YTEzLWJkNzZlY2NiODFkMSIsImMiOjR9&pageName=3b5e1682e799f5348290
+      SEED_EMPRESA_NOMBRE: Empresa Simulada 003 S.A.
+      SEED_EMPRESA_RUC: "1606538622001"
+      SEED_EMPRESA_REPORT_URL: https://app.powerbi.com/view?r=eyJrIjoiN2UzYzRjNTItN2U1NC00YTRlLWEyYzQtZjQwMTM1ODI5MTUzIiwidCI6IjhjYTUyZTJiLTFkMjAtNDI3NC05YTEzLWJkNzZlY2NiODFkMSIsImMiOjR9
+      SEED_EMPRESA_USER_USERNAME: empresa003
+      SEED_EMPRESA_USER_PASSWORD: "123456"
+    networks:
+      - default
+      - backend
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+networks:
+  backend:
+    external: true
