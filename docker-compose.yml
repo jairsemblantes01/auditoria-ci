@@ -1,8 +1,6 @@
 services:
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: jairum/auditoria.api:latest
     restart: unless-stopped
     ports:
       - "4000:4000"
@@ -27,11 +25,7 @@ services:
       - backend
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
-      args:
-        VITE_API_URL: /api
+    image: jairum/auditoria.app:latest
     restart: unless-stopped
     ports:
       - "5173:80"
